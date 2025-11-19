@@ -8,6 +8,18 @@ import blipRouter from './routes/blip.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const endpoints = {
+      usuarios: '/usuarios',
+      projetos: '/projetos',
+      boletos: '/boletos',
+      notasFiscais: '/notas-fiscais',
+      blip: {
+        getProjetosPorEmail: '/blip/getProjetosPorEmail?email=xxx',
+        getBoletosPorCpf: '/blip/getBoletosPorCpf?cpf=xxx',
+        getNotasFiscaisPorCpf: '/blip/getNotasFiscaisPorCpf?cpf=xxx',
+        getResumoPagamentosPorCpf: '/blip/getResumoPagamentosPorCpf?cpf=xxx'
+      }
+    }
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,18 +51,16 @@ app.get('/', (req, res) => {
   res.status(200).json({
     status: true,
     message: 'API CRM - Blip!',
-    endpoints: {
-      usuarios: '/usuarios',
-      projetos: '/projetos',
-      boletos: '/boletos',
-      notasFiscais: '/notas-fiscais',
-      blip: {
-        getProjetosPorEmail: '/blip/getProjetosPorEmail?email=xxx',
-        getBoletosPorCpf: '/blip/getBoletosPorCpf?cpf=xxx',
-        getNotasFiscaisPorCpf: '/blip/getNotasFiscaisPorCpf?cpf=xxx',
-        getResumoPagamentosPorCpf: '/blip/getResumoPagamentosPorCpf?cpf=xxx'
-      }
-    }
+    endpoints: endpoints
+  });
+});
+app.use('*', (req, res) => {
+  res.status(404).json({
+    status: false,
+    message: 'essa rota nao existe verifique as informacoes',
+    path: req.originalUrl,
+    method: req.method,
+    availableEndpoints: endpoints
   });
 });
 
