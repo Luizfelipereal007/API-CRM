@@ -112,7 +112,6 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Verificar se o projeto já tem um boleto
     const boletoExistente = await db.get(
       'SELECT * FROM boletos WHERE projeto_id = ?',
       [projeto_id]
@@ -147,7 +146,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Endpoint para marcar boleto como pago
 router.put('/:id/pagar', async (req, res) => {
   try {
     const { id } = req.params;
@@ -160,13 +158,12 @@ router.put('/:id/pagar', async (req, res) => {
       });
     }
 
-    // Marcar boleto como pago
     await db.run(
       'UPDATE boletos SET pago = 1 WHERE id = ?',
       [id]
     );
 
-    // Criar nota fiscal automaticamente quando o boleto é pago
+    // Cria uma nota fiscal automaticamente quando o boleto é pago
     const novaNotaFiscal = await db.run(
       'INSERT INTO notas_fiscais (boleto_id, valor, projeto_id) VALUES (?, ?, ?)',
       [id, boleto.valor, boleto.projeto_id]

@@ -94,9 +94,6 @@ router.get('/usuario/:usuarioId', async (req, res) => {
   }
 });
 
-// Rota removida - notas fiscais são criadas automaticamente quando boletos são pagos
-// Esta funcionalidade foi movida para o endpoint PUT /boletos/:id/pagar
-
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;

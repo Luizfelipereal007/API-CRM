@@ -157,7 +157,6 @@ router.get('/getNotasFiscaisPorCpf', async (req, res) => {
       });
     }
 
-    // Buscar apenas os boletos que já foram pagos (notas fiscais)
     const notasFiscais = await db.all(`
       SELECT
         n.id as nota_id,
@@ -213,7 +212,6 @@ router.get('/getNotasFiscaisPorCpf', async (req, res) => {
   }
 });
 
-// Endpoint para buscar resumo completo de pagamentos por CPF
 router.get('/getResumoPagamentosPorCpf', async (req, res) => {
   try {
     const { cpf } = req.query;
@@ -234,7 +232,6 @@ router.get('/getResumoPagamentosPorCpf', async (req, res) => {
       });
     }
 
-    // Buscar projetos com seus respectivos boletos e notas fiscais
     const resumo = await db.all(`
       SELECT
         p.id as projeto_id,
@@ -263,7 +260,6 @@ router.get('/getResumoPagamentosPorCpf', async (req, res) => {
       });
     }
 
-    // Agrupar por projeto
     const projetosAgrupados = {};
     resumo.forEach(row => {
       if (!projetosAgrupados[row.projeto_id]) {
