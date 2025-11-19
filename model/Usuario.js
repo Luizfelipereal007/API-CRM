@@ -40,6 +40,65 @@ export default class Usuario {
     }
   }
 
+  static async buscarPorEmail(email) {
+    try {
+      const usuario = await db.get('SELECT * FROM usuarios WHERE email = ?', [email]);
+      
+      if (!usuario) {
+        return Usuario.UsuarioNaoEncontrado;
+      }
+
+      return {
+        success: true,
+        data: usuario,
+        message: 'Usuário encontrado por email'
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar usuário por email: ${error.message}`);
+    }
+  }
+
+  static async buscarPorNome(nome) {
+    try {
+      const usuarios = await db.all('SELECT * FROM usuarios WHERE nome LIKE ?', [`%${nome}%`]);
+      
+      if (!usuarios || usuarios.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhum usuário encontrado com este nome'
+        };
+      }
+
+      return {
+        success: true,
+        data: usuarios,
+        count: usuarios.length,
+        message: `Encontrados ${usuarios.length} usuário(s) com este nome`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar usuários por nome: ${error.message}`);
+    }
+  }
+
+  static async buscarPorCpf(cpf) {
+    try {
+      const usuario = await db.get('SELECT * FROM usuarios WHERE cpf = ?', [cpf]);
+      
+      if (!usuario) {
+        return Usuario.UsuarioNaoEncontrado;
+      }
+
+      return {
+        success: true,
+        data: usuario,
+        message: 'Usuário encontrado por CPF'
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar usuário por CPF: ${error.message}`);
+    }
+  }
+
   static async criar(dadosUsuario) {
     try {
       const { nome, sobrenome, telefone, cpf, email } = dadosUsuario;
