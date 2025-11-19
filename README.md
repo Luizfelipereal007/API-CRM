@@ -23,6 +23,9 @@ API rodando em `http://localhost:3000`
 ### Usuários
 - **GET** `/usuarios` - Listar usuários
 - **GET** `/usuarios/:id` - Buscar por ID
+- **GET** `/usuarios/email/:email` - Buscar por email
+- **GET** `/usuarios/nome/:nome` - Buscar por nome
+- **GET** `/usuarios/cpf/:cpf` - Buscar por CPF
 - **POST** `/usuarios` - Criar usuário
 - **PUT** `/usuarios/:id` - Atualizar usuário
 - **DELETE** `/usuarios/:id` - Deletar usuário
