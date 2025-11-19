@@ -106,6 +106,7 @@ const initDatabase = async () => {
     await db.run(`
       CREATE TABLE IF NOT EXISTS notas_fiscais (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
         boleto_id INTEGER NOT NULL,
         data_emissao DATETIME DEFAULT CURRENT_TIMESTAMP,
         valor REAL NOT NULL,
