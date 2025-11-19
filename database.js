@@ -108,6 +108,7 @@ const initDatabase = async () => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
         boleto_id INTEGER NOT NULL,
+        data_vencimento TEXT NOT NULL,
         data_emissao DATETIME DEFAULT CURRENT_TIMESTAMP,
         valor REAL NOT NULL,
         projeto_id INTEGER NOT NULL,
