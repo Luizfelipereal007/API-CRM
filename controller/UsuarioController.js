@@ -57,6 +57,88 @@ export default class UsuarioController {
   }
 
 
+  static async buscarUsuarioPorEmail(req, res) {
+    try {
+      const { email } = req.params;
+      const resultado = await Usuario.buscarPorEmail(email);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data
+      });
+    } catch (error) {
+      console.error('Erro ao buscar usuário por email:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar usuário por email',
+        error: error.message
+      });
+    }
+  }
+
+  static async buscarUsuarioPorNome(req, res) {
+    try {
+      const { nome } = req.params;
+      const resultado = await Usuario.buscarPorNome(nome);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar usuários por nome:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar usuários por nome',
+        error: error.message
+      });
+    }
+  }
+
+  static async buscarUsuarioPorCpf(req, res) {
+    try {
+      const { cpf } = req.params;
+      const resultado = await Usuario.buscarPorCpf(cpf);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data
+      });
+    } catch (error) {
+      console.error('Erro ao buscar usuário por CPF:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar usuário por CPF',
+        error: error.message
+      });
+    }
+  }
+
   static async criarUsuario(req, res) {
     try {
       const resultado = await Usuario.criar(req.body);
