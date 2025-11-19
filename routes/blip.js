@@ -309,8 +309,8 @@ router.get('/getResumoPagamentosPorCpf', async (req, res) => {
       projetos: projetos,
       resumo_financeiro: {
         total_projetos: projetos.length,
-        projetos_finalizados: projetos.filter(p => p.projeto_status === 'finalizado').length,
-        projetos_em_desenvolvimento: projetos.filter(p => p.projeto_status === 'desenvolvimento').length,
+        projetos_finalizados: projetos.filter(p => p.projeto_status === 'Finalizado').length,
+        projetos_em_desenvolvimento: projetos.filter(p => p.projeto_status === 'Em desenvolvimento').length,
         total_boletos: totalBoletos,
         boletos_pagos: boletosPagos,
         boletos_pendentes: totalBoletos - boletosPagos,
