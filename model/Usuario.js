@@ -1,0 +1,142 @@
+import db from '../database.js';
+
+export default class Usuario {
+
+
+  static UsuarioNaoEncontrado = {
+          success: false,
+          status: 204,
+          message: 'Usuário não encontrado'
+        }
+        
+  static async buscarTodos() {
+    try {
+      const usuarios = await db.all('SELECT * FROM usuarios ORDER BY id');
+      return {
+        success: true,
+        data: usuarios,
+        count: usuarios.length
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar usuários: ${error.message}`);
+    }
+  }
+
+  static async buscarPorId(id) {
+    try {
+      const usuario = await db.get('SELECT * FROM usuarios WHERE id = ?', [id]);
+      
+      if (!usuario) {
+        return UsuarioNaoEncontrado;
+      }
+
+      return {
+        success: true,
+        data: usuario,
+        message: 'Usuário encontrado'
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar usuário: ${error.message}`);
+    }
+  }
+
+  static async criar(dadosUsuario) {
+    try {
+      const { nome, sobrenome, telefone, cpf, email } = dadosUsuario;
+
+      if (!nome || !sobrenome || !telefone || !cpf || !email) {
+        return {
+          success: false,
+          status: 422,
+          message: 'Todos os campos são obrigatórios',
+          required: ['nome', 'sobrenome', 'telefone', 'cpf', 'email']
+        };
+      }
+
+      const result = await db.run(
+        'INSERT INTO usuarios (nome, sobrenome, telefone, cpf, email) VALUES (?, ?, ?, ?, ?)',
+        [nome, sobrenome, telefone, cpf, email]
+      );
+
+      const novoUsuario = await db.get('SELECT * FROM usuarios WHERE id = ?', [result.lastID]);
+
+      return {
+        success: true,
+        status: 201,
+        data: novoUsuario,
+        message: 'Usuário criado com sucesso'
+      };
+    } catch (error) {
+      if (error.message.includes('UNIQUE constraint')) {
+        return {
+          success: false,
+          status: 422,
+          message: 'CPF ou Email já cadastrado'
+        };
+      }
+      throw new Error(`Erro ao criar usuário: ${error.message}`);
+    }
+  }
+
+  static async atualizar(id, dadosUsuario) {
+    try {
+      const { nome, sobrenome, telefone, cpf, email } = dadosUsuario;
+
+      const usuarioExistente = await this.buscarPorId(id);
+      if (!usuarioExistente.success) {
+        return UsuarioNaoEncontrado;
+      }
+
+      if (!nome || !sobrenome || !telefone || !cpf || !email) {
+        return {
+          success: false,
+          status: 422,
+          message: 'Todos os campos são obrigatórios',
+          required: ['nome', 'sobrenome', 'telefone', 'cpf', 'email']
+        };
+      }
+
+      await db.run(
+        'UPDATE usuarios SET nome = ?, sobrenome = ?, telefone = ?, cpf = ?, email = ? WHERE id = ?',
+        [nome, sobrenome, telefone, cpf, email, id]
+      );
+
+      const usuarioAtualizado = await db.get('SELECT * FROM usuarios WHERE id = ?', [id]);
+
+      return {
+        success: true,
+        status: 200,
+        data: usuarioAtualizado,
+        message: 'Usuário atualizado com sucesso'
+      };
+    } catch (error) {
+      if (error.message.includes('UNIQUE constraint')) {
+        return {
+          success: false,
+          status: 422,
+          message: 'CPF ou Email já cadastrado'
+        };
+      }
+      throw new Error(`Erro ao atualizar usuário: ${error.message}`);
+    }
+  }
+
+  static async deletar(id) {
+    try {
+      const usuario = await this.buscarPorId(id);
+      if (!usuario.success) {
+          return UsuarioNaoEncontrado;
+      }
+
+      await db.run('DELETE FROM usuarios WHERE id = ?', [id]);
+
+      return {
+        success: true,
+        status: 200,
+        message: 'Usuário deletado com sucesso'
+      };
+    } catch (error) {
+      throw new Error(`Erro ao deletar usuário: ${error.message}`);
+    }
+  }
+}
