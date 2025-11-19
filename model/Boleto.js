@@ -141,8 +141,8 @@ export default class Boleto {
       );
 
       const novaNotaFiscal = await db.run(
-        'INSERT INTO notas_fiscais (boleto_id, valor, projeto_id, nome) VALUES (?, ?, ?, ?)',
-        [id, boleto.valor, boleto.projeto_id, `NF-${id}-${Date.now()}`]
+        'INSERT INTO notas_fiscais (boleto_id, valor, projeto_id, nome, data_vencimento) VALUES (?, ?, ?, ?, ?)',
+        [id, boleto.valor, boleto.projeto_id, `NF-${id}-${Date.now()}`, boleto.data_vencimento]
       );
 
       const boletoAtualizado = await db.get('SELECT * FROM boletos WHERE id = ?', [id]);
