@@ -4,7 +4,7 @@ export default class Boleto {
 
   static BoletoNaoEncontrado = {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Boleto não encontrado'
         }
         

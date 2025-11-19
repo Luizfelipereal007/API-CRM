@@ -7,9 +7,9 @@ export default class BoletoController {
       const resultado = await Boleto.buscarTodos();
       
       if (resultado.count === 0) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
-          message: 'Nenhum boleto encontrado'
+          message: 'Nenhum boleto encontrado para este usuário'
         });
       }
       
@@ -34,9 +34,9 @@ export default class BoletoController {
       const resultado = await Boleto.buscarPorProjeto(projetoId);
       
       if (resultado.count === 0) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
-          message: 'Nenhum boleto encontrado'
+          message: 'Nenhum boleto encontrado para este projeto'
         });
       }
       
@@ -61,7 +61,7 @@ export default class BoletoController {
       const resultado = await Boleto.buscarPorUsuario(usuarioId);
       
       if (resultado.count === 0) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
           message: 'Nenhum boleto encontrado'
         });

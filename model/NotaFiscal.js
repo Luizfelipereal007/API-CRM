@@ -67,7 +67,7 @@ export default class NotaFiscal {
       if (!nota) {
         return {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Nota fiscal não encontrada'
         };
       }

@@ -35,7 +35,7 @@ export default class UsuarioController {
       const resultado = await Usuario.buscarPorId(id);
       
       if (!resultado.success) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
           message: resultado.message
         });

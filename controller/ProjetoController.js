@@ -35,7 +35,7 @@ export default class ProjetoController {
       const resultado = await Projeto.buscarPorId(id);
       
       if (!resultado.success) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
           message: resultado.message
         });
@@ -144,7 +144,7 @@ export default class ProjetoController {
       const resultado = await Projeto.deletar(id);
       
       if (!resultado.success) {
-        return res.status(resultado.status).json({
+        return res.status(404).json({
           status: false,
           message: resultado.message
         });

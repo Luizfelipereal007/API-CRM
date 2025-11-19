@@ -5,10 +5,10 @@ export default class Usuario {
 
   static UsuarioNaoEncontrado = {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Usuário não encontrado'
         }
-        
+
   static async buscarTodos() {
     try {
       const usuarios = await db.all('SELECT * FROM usuarios ORDER BY id');

@@ -7,9 +7,9 @@ export default class NotaFiscalController {
       const resultado = await NotaFiscal.buscarTodas();
       
       if (resultado.count === 0) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
-          message: 'Nenhuma nota fiscal encontrada'
+          message: 'Nenhuma nota fiscal encontrada para este usuário'
         });
       }
       
@@ -34,9 +34,9 @@ export default class NotaFiscalController {
       const resultado = await NotaFiscal.buscarPorProjeto(projetoId);
       
       if (resultado.count === 0) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
-          message: 'Nenhuma nota fiscal encontrada'
+          message: 'Nenhuma nota fiscal encontrada para este projeto'
         });
       }
       
@@ -61,7 +61,7 @@ export default class NotaFiscalController {
       const resultado = await NotaFiscal.buscarPorUsuario(usuarioId);
       
       if (resultado.count === 0) {
-        return res.status(204).json({
+        return res.status(404).json({
           status: false,
           message: 'Nenhuma nota fiscal encontrada'
         });

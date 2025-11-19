@@ -5,7 +5,7 @@ export default class Projeto {
 
   static ProjetoNaoEncontrado = {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Projeto não encontrado'
         }
 

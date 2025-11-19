@@ -17,7 +17,7 @@ export default class Blip {
       if (!usuario) {
         return {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Usuário não encontrado'
         };
       }
@@ -30,7 +30,7 @@ export default class Blip {
       if (!projetos || projetos.length === 0) {
         return {
           success: true,
-          status: 204,
+          status: 404,
           message: 'Nenhum projeto encontrado para este usuário',
           projetos: []
         };
@@ -67,7 +67,7 @@ export default class Blip {
       if (!usuario) {
         return {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Usuário não encontrado'
         };
       }
@@ -160,7 +160,7 @@ export default class Blip {
       if (!usuario) {
         return {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Usuário não encontrado'
         };
       }
@@ -237,7 +237,7 @@ export default class Blip {
       if (!usuario) {
         return {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Usuário não encontrado'
         };
       }
@@ -266,7 +266,7 @@ export default class Blip {
       if (!resumo || resumo.length === 0) {
         return {
           success: false,
-          status: 204,
+          status: 404,
           message: 'Nenhum projeto encontrado para este usuário'
         };
       }
