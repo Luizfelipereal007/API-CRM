@@ -28,14 +28,14 @@ app.use('/projetos', projetosRouter);
 app.use('/boletos', boletosRouter);
 app.use('/notas-fiscais', notasFiscaisRouter);
 app.use('/blip', blipRouter);
-app.get('/health', (res) => {
+app.get('/health', (req, res) => {
   res.status(200).json({
     status: true,
     message: 'API está funcionando',
     timestamp: new Date().toISOString()
   });
 });
-app.get('/', (res) => {
+app.get('/', (req, res) => {
   res.status(200).json({
     status: true,
     message: 'API CRM - Blip!',
@@ -47,7 +47,8 @@ app.get('/', (res) => {
       blip: {
         getProjetosPorEmail: '/blip/getProjetosPorEmail?email=xxx',
         getBoletosPorCpf: '/blip/getBoletosPorCpf?cpf=xxx',
-        getNotasFiscaisPorCpf: '/blip/getNotasFiscaisPorCpf?cpf=xxx'
+        getNotasFiscaisPorCpf: '/blip/getNotasFiscaisPorCpf?cpf=xxx',
+        getResumoPagamentosPorCpf: '/blip/getResumoPagamentosPorCpf?cpf=xxx'
       }
     }
   });
