@@ -84,6 +84,90 @@ export default class ProjetoController {
     }
   }
 
+  static async buscarProjetosPorEmail(req, res) {
+    try {
+      const { email } = req.params;
+      const resultado = await Projeto.buscarPorEmail(email);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar projetos por email:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar projetos por email',
+        error: error.message
+      });
+    }
+  }
+
+  static async buscarProjetosPorNome(req, res) {
+    try {
+      const { nome } = req.params;
+      const resultado = await Projeto.buscarPorNome(nome);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar projetos por nome:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar projetos por nome',
+        error: error.message
+      });
+    }
+  }
+
+  static async buscarProjetosPorCpf(req, res) {
+    try {
+      const { cpf } = req.params;
+      const resultado = await Projeto.buscarPorCpf(cpf);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar projetos por CPF:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar projetos por CPF',
+        error: error.message
+      });
+    }
+  }
+
   static async criarProjeto(req, res) {
     try {
       const resultado = await Projeto.criar(req.body);
