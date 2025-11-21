@@ -67,6 +67,96 @@ export default class Boleto {
     }
   }
 
+  static async buscarPorEmail(email) {
+    try {
+      const boletos = await db.all(`
+        SELECT b.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        FROM boletos b
+        INNER JOIN projetos p ON b.projeto_id = p.id
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE u.email = ?
+        ORDER BY b.id
+      `, [email]);
+      
+      if (!boletos || boletos.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhum boleto encontrado para este email'
+        };
+      }
+
+      return {
+        success: true,
+        data: boletos,
+        count: boletos.length,
+        message: `Encontrados ${boletos.length} boleto(s) para este email`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar boletos por email: ${error.message}`);
+    }
+  }
+
+  static async buscarPorNome(nome) {
+    try {
+      const boletos = await db.all(`
+        SELECT b.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        FROM boletos b
+        INNER JOIN projetos p ON b.projeto_id = p.id
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE u.nome LIKE ?
+        ORDER BY b.id
+      `, [`%${nome}%`]);
+      
+      if (!boletos || boletos.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhum boleto encontrado para este nome'
+        };
+      }
+
+      return {
+        success: true,
+        data: boletos,
+        count: boletos.length,
+        message: `Encontrados ${boletos.length} boleto(s) para este nome`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar boletos por nome: ${error.message}`);
+    }
+  }
+
+  static async buscarPorCpf(cpf) {
+    try {
+      const boletos = await db.all(`
+        SELECT b.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        FROM boletos b
+        INNER JOIN projetos p ON b.projeto_id = p.id
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE u.cpf = ?
+        ORDER BY b.id
+      `, [cpf]);
+      
+      if (!boletos || boletos.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhum boleto encontrado para este CPF'
+        };
+      }
+
+      return {
+        success: true,
+        data: boletos,
+        count: boletos.length,
+        message: `Encontrados ${boletos.length} boleto(s) para este CPF`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar boletos por CPF: ${error.message}`);
+    }
+  }
+
   static async criar(dadosBoleto) {
     try {
       const { nome, valor, data_vencimento, status_projeto, projeto_id } = dadosBoleto;
