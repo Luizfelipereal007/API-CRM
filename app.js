@@ -4,7 +4,7 @@ import usuariosRouter from './routes/usuarios.js';
 import projetosRouter from './routes/projetos.js';
 import boletosRouter from './routes/boletos.js';
 import notasFiscaisRouter from './routes/notasFiscais.js';
-import blipRouter from './routes/blip.js';
+import resumosRouter from './routes/resumos.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,11 +13,8 @@ const endpoints = {
       projetos: '/projetos',
       boletos: '/boletos',
       notasFiscais: '/notas-fiscais',
-      blip: {
-        getProjetosPorEmail: '/blip/getProjetosPorEmail?email=xxx',
-        getBoletosPorCpf: '/blip/getBoletosPorCpf?cpf=xxx',
-        getNotasFiscaisPorCpf: '/blip/getNotasFiscaisPorCpf?cpf=xxx',
-        getResumoPagamentosPorCpf: '/blip/getResumoPagamentosPorCpf?cpf=xxx'
+      resumos: {
+        getResumoPagamentosPorCpf: '/getResumoPagamentosPorCpf?cpf=xxx'
       }
     }
 
@@ -39,7 +36,7 @@ app.use('/usuarios', usuariosRouter);
 app.use('/projetos', projetosRouter);
 app.use('/boletos', boletosRouter);
 app.use('/notas-fiscais', notasFiscaisRouter);
-app.use('/blip', blipRouter);
+app.use('/', resumosRouter);
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: true,
@@ -50,7 +47,7 @@ app.get('/health', (req, res) => {
 app.get('/', (req, res) => {
   res.status(200).json({
     status: true,
-    message: 'API CRM - Blip!',
+    message: 'API CRM',
     endpoints: endpoints
   });
 });
