@@ -103,30 +103,6 @@ API rodando em `http://localhost:3000`
 
 ## Endpoints Para a Blip
 
-### GET /blip/getProjetosPorEmail
-Busca projetos pelo email do usuário.
-
-**URL:**
-```
-GET /blip/getProjetosPorEmail?email=usuario@email.com
-```
-
-### GET /blip/getBoletosPorCpf
-Busca boletos pelo CPF do usuário (inclui status de pagamento).
-
-**URL:**
-```
-GET /blip/getBoletosPorCpf?cpf=123.456.789-00
-```
-
-### GET /blip/getNotasFiscaisPorCpf
-Busca apenas notas fiscais (boletos pagos) pelo CPF.
-
-**URL:**
-```
-GET /blip/getNotasFiscaisPorCpf?cpf=123.456.789-00
-```
-
 ### GET /blip/getResumoPagamentosPorCpf
 Resumo completo de pagamentos por CPF.
 
