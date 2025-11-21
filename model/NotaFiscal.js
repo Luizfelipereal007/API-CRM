@@ -61,6 +61,96 @@ export default class NotaFiscal {
     }
   }
 
+  static async buscarPorEmail(email) {
+    try {
+      const notas = await db.all(`
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        FROM notas_fiscais n
+        INNER JOIN projetos p ON n.projeto_id = p.id
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE u.email = ?
+        ORDER BY n.id
+      `, [email]);
+      
+      if (!notas || notas.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhuma nota fiscal encontrada para este email'
+        };
+      }
+
+      return {
+        success: true,
+        data: notas,
+        count: notas.length,
+        message: `Encontradas ${notas.length} nota(s) fiscal(is) para este email`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar notas fiscais por email: ${error.message}`);
+    }
+  }
+
+  static async buscarPorNome(nome) {
+    try {
+      const notas = await db.all(`
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        FROM notas_fiscais n
+        INNER JOIN projetos p ON n.projeto_id = p.id
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE u.nome LIKE ?
+        ORDER BY n.id
+      `, [`%${nome}%`]);
+      
+      if (!notas || notas.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhuma nota fiscal encontrada para este nome'
+        };
+      }
+
+      return {
+        success: true,
+        data: notas,
+        count: notas.length,
+        message: `Encontradas ${notas.length} nota(s) fiscal(is) para este nome`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar notas fiscais por nome: ${error.message}`);
+    }
+  }
+
+  static async buscarPorCpf(cpf) {
+    try {
+      const notas = await db.all(`
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        FROM notas_fiscais n
+        INNER JOIN projetos p ON n.projeto_id = p.id
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        WHERE u.cpf = ?
+        ORDER BY n.id
+      `, [cpf]);
+      
+      if (!notas || notas.length === 0) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Nenhuma nota fiscal encontrada para este CPF'
+        };
+      }
+
+      return {
+        success: true,
+        data: notas,
+        count: notas.length,
+        message: `Encontradas ${notas.length} nota(s) fiscal(is) para este CPF`
+      };
+    } catch (error) {
+      throw new Error(`Erro ao buscar notas fiscais por CPF: ${error.message}`);
+    }
+  }
+
   static async deletar(id) {
     try {
       const nota = await db.get('SELECT * FROM notas_fiscais WHERE id = ?', [id]);
