@@ -2,6 +2,10 @@ import db from '../database.js';
 
 export default class NotaFiscal {
 
+  static formatarData(data) {
+    return data.toLocaleString('sv-SE').replace(',', '');
+  }
+
   static async buscarTodas() {
     try {
       const notas = await db.all(`
@@ -13,10 +17,15 @@ export default class NotaFiscal {
         ORDER BY n.id
       `);
       
+      const notasFormatadas = notas.map(nota => ({
+        ...nota,
+        pago_em: nota.pago_em ? this.formatarData(new Date(nota.pago_em)) : null
+      }));
+      
       return {
         success: true,
-        data: notas,
-        count: notas.length
+        data: notasFormatadas,
+        count: notasFormatadas.length
       };
     } catch (error) {
       throw new Error(`Erro ao buscar notas fiscais: ${error.message}`);
@@ -30,11 +39,16 @@ export default class NotaFiscal {
         [projetoId]
       );
       
+      const notasFormatadas = notas.map(nota => ({
+        ...nota,
+        pago_em: nota.pago_em ? this.formatarData(new Date(nota.pago_em)) : null
+      }));
+      
       return {
         success: true,
-        data: notas,
-        count: notas.length,
-        message: 'Notas fiscais encontradas: ' + notas.length
+        data: notasFormatadas,
+        count: notasFormatadas.length,
+        message: 'Notas fiscais encontradas: ' + notasFormatadas.length
       };
     } catch (error) {
       throw new Error(`Erro ao buscar notas fiscais do projeto: ${error.message}`);
@@ -52,11 +66,16 @@ export default class NotaFiscal {
         ORDER BY n.id
       `, [usuarioId]);
       
+      const notasFormatadas = notas.map(nota => ({
+        ...nota,
+        pago_em: nota.pago_em ? this.formatarData(new Date(nota.pago_em)) : null
+      }));
+      
       return {
         success: true,
-        data: notas,
-        count: notas.length,
-        message: 'Notas fiscais encontradas: ' + notas.length
+        data: notasFormatadas,
+        count: notasFormatadas.length,
+        message: 'Notas fiscais encontradas: ' + notasFormatadas.length
       };
     } catch (error) {
       throw new Error(`Erro ao buscar notas fiscais do usuário: ${error.message}`);
@@ -83,10 +102,15 @@ export default class NotaFiscal {
         };
       }
 
+      const notasFormatadas = notas.map(nota => ({
+        ...nota,
+        pago_em: nota.pago_em ? this.formatarData(new Date(nota.pago_em)) : null
+      }));
+
       return {
         success: true,
-        data: notas,
-        count: notas.length,
+        data: notasFormatadas,
+        count: notasFormatadas.length,
         message: `Encontradas ${notas.length} nota(s) fiscal(is) para este email`
       };
     } catch (error) {
@@ -114,10 +138,15 @@ export default class NotaFiscal {
         };
       }
 
+      const notasFormatadas = notas.map(nota => ({
+        ...nota,
+        pago_em: nota.pago_em ? this.formatarData(new Date(nota.pago_em)) : null
+      }));
+
       return {
         success: true,
-        data: notas,
-        count: notas.length,
+        data: notasFormatadas,
+        count: notasFormatadas.length,
         message: `Encontradas ${notas.length} nota(s) fiscal(is) para este nome`
       };
     } catch (error) {
@@ -145,10 +174,15 @@ export default class NotaFiscal {
         };
       }
 
+      const notasFormatadas = notas.map(nota => ({
+        ...nota,
+        pago_em: nota.pago_em ? this.formatarData(new Date(nota.pago_em)) : null
+      }));
+
       return {
         success: true,
-        data: notas,
-        count: notas.length,
+        data: notasFormatadas,
+        count: notasFormatadas.length,
         message: `Encontradas ${notas.length} nota(s) fiscal(is) para este CPF`
       };
     } catch (error) {
