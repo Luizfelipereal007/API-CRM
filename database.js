@@ -96,6 +96,7 @@ const initDatabase = async () => {
         data_vencimento TEXT NOT NULL,
         status_projeto TEXT NOT NULL DEFAULT 'desenvolvimento',
         pago BOOLEAN DEFAULT 0,
+        pago_em DATETIME NULL,
         projeto_id INTEGER NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (projeto_id) REFERENCES projetos(id) ON DELETE CASCADE
@@ -110,6 +111,7 @@ const initDatabase = async () => {
         boleto_id INTEGER NOT NULL,
         data_vencimento TEXT NOT NULL,
         data_emissao DATETIME DEFAULT CURRENT_TIMESTAMP,
+        pago_em DATETIME NOT NULL,
         valor REAL NOT NULL,
         projeto_id INTEGER NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
