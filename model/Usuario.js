@@ -2,19 +2,53 @@ import db from '../database.js';
 
 export default class Usuario {
 
-
   static UsuarioNaoEncontrado = {
-          success: false,
-          status: 404,
-          message: 'Usuário não encontrado'
-        }
+    success: false,
+    status: 404,
+    message: 'Usuário não encontrado'
+  }
+
+  static async adicionarCountsUsuario(usuario) {
+    try {
+      const countProjetos = await db.get(
+        'SELECT COUNT(*) as count FROM projetos WHERE usuario_id = ?',
+        [usuario.id]
+      );
+      
+      const countBoletos = await db.get(
+        'SELECT COUNT(*) as count FROM boletos b INNER JOIN projetos p ON b.projeto_id = p.id WHERE p.usuario_id = ?',
+        [usuario.id]
+      );
+      
+      const countNotasFiscais = await db.get(
+        'SELECT COUNT(*) as count FROM notas_fiscais nf INNER JOIN projetos p ON nf.projeto_id = p.id WHERE p.usuario_id = ?',
+        [usuario.id]
+      );
+      
+      return {
+        ...usuario,
+        projetos: countProjetos.count,
+        boletos: countBoletos.count,
+        notas_fiscais: countNotasFiscais.count
+      };
+    } catch (error) {
+      throw new Error(`Erro ao adicionar counts ao usuário: ${error.message}`);
+    }
+  }
 
   static async buscarTodos() {
     try {
       const usuarios = await db.all('SELECT * FROM usuarios ORDER BY id');
+      
+      const usuariosComCounts = await Promise.all(
+        usuarios.map(async (usuario) => {
+          return await this.adicionarCountsUsuario(usuario);
+        })
+      );
+      
       return {
         success: true,
-        data: usuarios,
+        data: usuariosComCounts,
         count: usuarios.length
       };
     } catch (error) {
@@ -30,9 +64,11 @@ export default class Usuario {
         return UsuarioNaoEncontrado;
       }
 
+      const usuarioComCounts = await this.adicionarCountsUsuario(usuario);
+
       return {
         success: true,
-        data: usuario,
+        data: usuarioComCounts,
         message: 'Usuário encontrado'
       };
     } catch (error) {
@@ -48,9 +84,11 @@ export default class Usuario {
         return Usuario.UsuarioNaoEncontrado;
       }
 
+      const usuarioComCounts = await this.adicionarCountsUsuario(usuario);
+
       return {
         success: true,
-        data: usuario,
+        data: usuarioComCounts,
         message: 'Usuário encontrado por email'
       };
     } catch (error) {
@@ -70,9 +108,15 @@ export default class Usuario {
         };
       }
 
+      const usuariosComCounts = await Promise.all(
+        usuarios.map(async (usuario) => {
+          return await this.adicionarCountsUsuario(usuario);
+        })
+      );
+
       return {
         success: true,
-        data: usuarios,
+        data: usuariosComCounts,
         count: usuarios.length,
         message: `Encontrados ${usuarios.length} usuário(s) com este nome`
       };
@@ -89,9 +133,11 @@ export default class Usuario {
         return Usuario.UsuarioNaoEncontrado;
       }
 
+      const usuarioComCounts = await this.adicionarCountsUsuario(usuario);
+
       return {
         success: true,
-        data: usuario,
+        data: usuarioComCounts,
         message: 'Usuário encontrado por CPF'
       };
     } catch (error) {
