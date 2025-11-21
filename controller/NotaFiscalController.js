@@ -82,6 +82,90 @@ export default class NotaFiscalController {
     }
   }
 
+  static async buscarNotasFiscaisPorEmail(req, res) {
+    try {
+      const { email } = req.params;
+      const resultado = await NotaFiscal.buscarPorEmail(email);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar notas fiscais por email:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar notas fiscais por email',
+        error: error.message
+      });
+    }
+  }
+
+  static async buscarNotasFiscaisPorNome(req, res) {
+    try {
+      const { nome } = req.params;
+      const resultado = await NotaFiscal.buscarPorNome(nome);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar notas fiscais por nome:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar notas fiscais por nome',
+        error: error.message
+      });
+    }
+  }
+
+  static async buscarNotasFiscaisPorCpf(req, res) {
+    try {
+      const { cpf } = req.params;
+      const resultado = await NotaFiscal.buscarPorCpf(cpf);
+      
+      if (!resultado.success) {
+        return res.status(404).json({
+          status: false,
+          message: resultado.message
+        });
+      }
+
+      res.status(200).json({
+        status: true,
+        message: resultado.message,
+        data: resultado.data,
+        count: resultado.count
+      });
+    } catch (error) {
+      console.error('Erro ao buscar notas fiscais por CPF:', error);
+      res.status(500).json({
+        status: false,
+        message: 'Erro ao buscar notas fiscais por CPF',
+        error: error.message
+      });
+    }
+  }
+
   static async deletarNotaFiscal(req, res) {
     try {
       const { id } = req.params;
