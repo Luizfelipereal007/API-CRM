@@ -2,6 +2,10 @@ import db from '../database.js';
 
 export default class Boleto {
 
+  static formatarData(data) {
+    return data.toLocaleString('sv-SE').replace(',', '');
+  }
+
   static BoletoNaoEncontrado = {
           success: false,
           status: 404,
@@ -18,10 +22,15 @@ export default class Boleto {
         ORDER BY b.id
       `);
       
+      const boletosFormatados = boletos.map(boleto => ({
+        ...boleto,
+        pago_em: boleto.pago_em ? this.formatarData(new Date(boleto.pago_em)) : null
+      }));
+      
       return {
         success: true,
-        data: boletos,
-        count: boletos.length
+        data: boletosFormatados,
+        count: boletosFormatados.length
       };
     } catch (error) {
       throw new Error(`Erro ao buscar boletos: ${error.message}`);
@@ -35,11 +44,16 @@ export default class Boleto {
         [projetoId]
       );
       
+      const boletosFormatados = boletos.map(boleto => ({
+        ...boleto,
+        pago_em: boleto.pago_em ? this.formatarData(new Date(boleto.pago_em)) : null
+      }));
+      
       return {
         success: true,
-        data: boletos,
-        count: boletos.length,
-        message: 'Boletos encontrados: ' + boletos.length
+        data: boletosFormatados,
+        count: boletosFormatados.length,
+        message: 'Boletos encontrados: ' + boletosFormatados.length
       };
     } catch (error) {
       throw new Error(`Erro ao buscar boletos do projeto: ${error.message}`);
@@ -56,11 +70,16 @@ export default class Boleto {
         ORDER BY b.id
       `, [usuarioId]);
       
+      const boletosFormatados = boletos.map(boleto => ({
+        ...boleto,
+        pago_em: boleto.pago_em ? this.formatarData(new Date(boleto.pago_em)) : null
+      }));
+      
       return {
         success: true,
-        data: boletos,
-        count: boletos.length,
-        message: 'Boletos encontrados: ' + boletos.length
+        data: boletosFormatados,
+        count: boletosFormatados.length,
+        message: 'Boletos encontrados: ' + boletosFormatados.length
       };
     } catch (error) {
       throw new Error(`Erro ao buscar boletos do usuário: ${error.message}`);
@@ -86,10 +105,15 @@ export default class Boleto {
         };
       }
 
+      const boletosFormatados = boletos.map(boleto => ({
+        ...boleto,
+        pago_em: boleto.pago_em ? this.formatarData(new Date(boleto.pago_em)) : null
+      }));
+
       return {
         success: true,
-        data: boletos,
-        count: boletos.length,
+        data: boletosFormatados,
+        count: boletosFormatados.length,
         message: `Encontrados ${boletos.length} boleto(s) para este email`
       };
     } catch (error) {
@@ -116,10 +140,15 @@ export default class Boleto {
         };
       }
 
+      const boletosFormatados = boletos.map(boleto => ({
+        ...boleto,
+        pago_em: boleto.pago_em ? this.formatarData(new Date(boleto.pago_em)) : null
+      }));
+
       return {
         success: true,
-        data: boletos,
-        count: boletos.length,
+        data: boletosFormatados,
+        count: boletosFormatados.length,
         message: `Encontrados ${boletos.length} boleto(s) para este nome`
       };
     } catch (error) {
@@ -146,10 +175,15 @@ export default class Boleto {
         };
       }
 
+      const boletosFormatados = boletos.map(boleto => ({
+        ...boleto,
+        pago_em: boleto.pago_em ? this.formatarData(new Date(boleto.pago_em)) : null
+      }));
+
       return {
         success: true,
-        data: boletos,
-        count: boletos.length,
+        data: boletosFormatados,
+        count: boletosFormatados.length,
         message: `Encontrados ${boletos.length} boleto(s) para este CPF`
       };
     } catch (error) {
@@ -225,7 +259,7 @@ export default class Boleto {
         };
       }
 
-      const dataPagamento = new Date().toISOString();
+      const dataPagamento = this.formatarData(new Date());
       
       await db.run(
         'UPDATE boletos SET pago = 1, pago_em = ? WHERE id = ?',
@@ -244,7 +278,10 @@ export default class Boleto {
         success: true,
         status: 200,
         data: {
-          boleto: boletoAtualizado,
+          boleto: {
+            ...boletoAtualizado,
+            pago_em: dataPagamento
+          },
           nota_fiscal: notaFiscal
         },
         message: 'Boleto pago com sucesso e nota fiscal criada',
