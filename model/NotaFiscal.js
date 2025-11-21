@@ -5,10 +5,11 @@ export default class NotaFiscal {
   static async buscarTodas() {
     try {
       const notas = await db.all(`
-        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.cpf as usuario_cpf
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.cpf as usuario_cpf, b.nome as boleto_nome, b.pago, b.pago_em
         FROM notas_fiscais n
         INNER JOIN projetos p ON n.projeto_id = p.id
         INNER JOIN usuarios u ON p.usuario_id = u.id
+        LEFT JOIN boletos b ON n.boleto_id = b.id
         ORDER BY n.id
       `);
       
@@ -25,7 +26,7 @@ export default class NotaFiscal {
   static async buscarPorProjeto(projetoId) {
     try {
       const notas = await db.all(
-        'SELECT * FROM notas_fiscais WHERE projeto_id = ? ORDER BY id',
+        'SELECT n.*, b.nome as boleto_nome, b.pago, b.pago_em FROM notas_fiscais n LEFT JOIN boletos b ON n.boleto_id = b.id WHERE n.projeto_id = ? ORDER BY n.id',
         [projetoId]
       );
       
@@ -43,9 +44,10 @@ export default class NotaFiscal {
   static async buscarPorUsuario(usuarioId) {
     try {
       const notas = await db.all(`
-        SELECT n.*, p.nome as projeto_nome
+        SELECT n.*, p.nome as projeto_nome, b.nome as boleto_nome, b.pago, b.pago_em
         FROM notas_fiscais n
         INNER JOIN projetos p ON n.projeto_id = p.id
+        LEFT JOIN boletos b ON n.boleto_id = b.id
         WHERE p.usuario_id = ?
         ORDER BY n.id
       `, [usuarioId]);
@@ -64,10 +66,11 @@ export default class NotaFiscal {
   static async buscarPorEmail(email) {
     try {
       const notas = await db.all(`
-        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf, b.nome as boleto_nome, b.pago, b.pago_em
         FROM notas_fiscais n
         INNER JOIN projetos p ON n.projeto_id = p.id
         INNER JOIN usuarios u ON p.usuario_id = u.id
+        LEFT JOIN boletos b ON n.boleto_id = b.id
         WHERE u.email = ?
         ORDER BY n.id
       `, [email]);
@@ -94,10 +97,11 @@ export default class NotaFiscal {
   static async buscarPorNome(nome) {
     try {
       const notas = await db.all(`
-        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf, b.nome as boleto_nome, b.pago, b.pago_em
         FROM notas_fiscais n
         INNER JOIN projetos p ON n.projeto_id = p.id
         INNER JOIN usuarios u ON p.usuario_id = u.id
+        LEFT JOIN boletos b ON n.boleto_id = b.id
         WHERE u.nome LIKE ?
         ORDER BY n.id
       `, [`%${nome}%`]);
@@ -124,10 +128,11 @@ export default class NotaFiscal {
   static async buscarPorCpf(cpf) {
     try {
       const notas = await db.all(`
-        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf
+        SELECT n.*, p.nome as projeto_nome, u.nome as usuario_nome, u.email as usuario_email, u.cpf as usuario_cpf, b.nome as boleto_nome, b.pago, b.pago_em
         FROM notas_fiscais n
         INNER JOIN projetos p ON n.projeto_id = p.id
         INNER JOIN usuarios u ON p.usuario_id = u.id
+        LEFT JOIN boletos b ON n.boleto_id = b.id
         WHERE u.cpf = ?
         ORDER BY n.id
       `, [cpf]);
