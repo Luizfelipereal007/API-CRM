@@ -225,14 +225,16 @@ export default class Boleto {
         };
       }
 
+      const dataPagamento = new Date().toISOString();
+      
       await db.run(
-        'UPDATE boletos SET pago = 1 WHERE id = ?',
-        [id]
+        'UPDATE boletos SET pago = 1, pago_em = ? WHERE id = ?',
+        [dataPagamento, id]
       );
 
       const novaNotaFiscal = await db.run(
-        'INSERT INTO notas_fiscais (boleto_id, valor, projeto_id, nome, data_vencimento) VALUES (?, ?, ?, ?, ?)',
-        [id, boleto.valor, boleto.projeto_id, `NF-${id}-${Date.now()}`, boleto.data_vencimento]
+        'INSERT INTO notas_fiscais (boleto_id, valor, projeto_id, nome, data_vencimento, pago_em) VALUES (?, ?, ?, ?, ?, ?)',
+        [id, boleto.valor, boleto.projeto_id, `NF-${id}-${Date.now()}`, boleto.data_vencimento, dataPagamento]
       );
 
       const boletoAtualizado = await db.get('SELECT * FROM boletos WHERE id = ?', [id]);
@@ -245,7 +247,8 @@ export default class Boleto {
           boleto: boletoAtualizado,
           nota_fiscal: notaFiscal
         },
-        message: 'Boleto pago com sucesso e nota fiscal criada'
+        message: 'Boleto pago com sucesso e nota fiscal criada',
+        pago_em: dataPagamento
       };
     } catch (error) {
       throw new Error(`Erro ao pagar boleto: ${error.message}`);
