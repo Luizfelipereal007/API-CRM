@@ -88,6 +88,9 @@ API rodando em `http://localhost:3000`
 - **GET** `/notas-fiscais` - Listar notas fiscais
 - **GET** `/notas-fiscais/projeto/:projetoId` - Notas do projeto
 - **GET** `/notas-fiscais/usuario/:usuarioId` - Notas do usuário
+- **GET** `/notas-fiscais/email/:email` - Buscar notas por email do usuário
+- **GET** `/notas-fiscais/nome/:nome` - Buscar notas por nome do usuário
+- **GET** `/notas-fiscais/cpf/:cpf` - Buscar notas por CPF do usuário
 - **DELETE** `/notas-fiscais/:id` - Deletar nota fiscal
 
 **⚠️ POST** - Notas fiscais são criadas automaticamente quando o boleto é pago
