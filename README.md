@@ -66,6 +66,9 @@ API rodando em `http://localhost:3000`
 - **GET** `/boletos` - Listar boletos
 - **GET** `/boletos/projeto/:projetoId` - Boletos do projeto
 - **GET** `/boletos/usuario/:usuarioId` - Boletos do usuário
+- **GET** `/boletos/email/:email` - Buscar boletos por email do usuário
+- **GET** `/boletos/nome/:nome` - Buscar boletos por nome do usuário
+- **GET** `/boletos/cpf/:cpf` - Buscar boletos por CPF do usuário
 - **POST** `/boletos` - Criar boleto
 - **PUT** `/boletos/:id/pagar` - Marcar como pago (gera nota fiscal automaticamente)
 - **DELETE** `/boletos/:id` - Deletar boleto
