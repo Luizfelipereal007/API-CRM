@@ -45,6 +45,9 @@ API rodando em `http://localhost:3000`
 - **GET** `/projetos` - Listar projetos
 - **GET** `/projetos/:id` - Buscar por ID
 - **GET** `/projetos/usuario/:usuarioId` - Projetos do usuário
+- **GET** `/projetos/email/:email` - Buscar projetos por email do usuário
+- **GET** `/projetos/nome/:nome` - Buscar projetos por nome do usuário
+- **GET** `/projetos/cpf/:cpf` - Buscar projetos por CPF do usuário
 - **POST** `/projetos` - Criar projeto
 - **PUT** `/projetos/:id` - Atualizar projeto
 - **DELETE** `/projetos/:id` - Deletar projeto
