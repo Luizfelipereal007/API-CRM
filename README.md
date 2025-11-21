@@ -1,6 +1,6 @@
 # API-CRM
 
-API de CRM com Node.js, Express e SQLite para integração com Blip.
+API de CRM com Node.js, Express e SQLite.
 
 ## Instalação
 
@@ -99,23 +99,23 @@ API rodando em `http://localhost:3000`
 1. Criar boleto via `POST /boletos`
 2. Pagar boleto via `PUT /boletos/:id/pagar`
 3. Nota fiscal é gerada automaticamente
-4. Consultar notas via `/notas-fiscais` ou `/blip/getNotasFiscaisPorCpf`
+4. Consultar notas via `/notas-fiscais`
 
-## Endpoints Para a Blip
+## Endpoints de Resumos
 
-### GET /blip/getResumoPagamentosPorCpf
+### GET /getResumoPagamentosPorCpf
 Resumo completo de pagamentos por CPF.
 
 **URL:**
 ```
-GET /blip/getResumoPagamentosPorCpf?cpf=123.456.789-00
+GET /getResumoPagamentosPorCpf?cpf=123.456.789-00
 ```
 
 ### ⚠️ Regras de Negócio Implementadas
 - **Projetos**: Usuário pode ter múltiplos projetos
 - **Boletos**: Apenas 1 boleto por projeto
 - **Notas Fiscais**: Criadas automaticamente quando boleto é pago
-- **Blip**: `getNotasFiscaisPorCpf` retorna apenas boletos pagos
+- **Resumos**: Retorna um resumo de boletos pagos
 
 ## Status HTTP
 
