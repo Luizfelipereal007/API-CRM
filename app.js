@@ -1,10 +1,11 @@
 import express from 'express';
 import db from './database.js';
-import usuariosRouter from './routes/usuarios.js';
-import projetosRouter from './routes/projetos.js';
 import boletosRouter from './routes/boletos.js';
+import faqRouter from './routes/faq.js';
 import notasFiscaisRouter from './routes/notasFiscais.js';
+import projetosRouter from './routes/projetos.js';
 import resumosRouter from './routes/resumos.js';
+import usuariosRouter from './routes/usuarios.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,11 @@ const endpoints = {
       notasFiscais: '/notas-fiscais',
       resumos: {
         getResumoPagamentosPorCpf: '/getResumoPagamentosPorCpf?cpf=xxx'
+      },
+      faq: {
+        buscar: 'POST /faq',
+        listarAssuntos: 'GET /faq/assuntos',
+        buscarPorAssunto: 'GET /faq/assunto/:assunto'
       }
     }
 
@@ -37,6 +43,7 @@ app.use('/projetos', projetosRouter);
 app.use('/boletos', boletosRouter);
 app.use('/notas-fiscais', notasFiscaisRouter);
 app.use('/', resumosRouter);
+app.use('/faq', faqRouter);
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: true,
