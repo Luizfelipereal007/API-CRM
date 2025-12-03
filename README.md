@@ -111,6 +111,74 @@ Resumo completo de pagamentos por CPF.
 GET /getResumoPagamentosPorCpf?cpf=123.456.789-00
 ```
 
+## Sistema de FAQ Dinâmica
+
+### Endpoints FAQ
+Sistema inteligente de FAQ com detecção automática de assunto usando fuzzy matching otimizado.
+
+- **POST** `/faq` - Buscar resposta para pergunta
+- **GET** `/faq/assuntos` - Listar todos os assuntos disponíveis  
+- **GET** `/faq/assunto/:assunto` - Buscar perguntas por assunto específico
+
+### POST /faq
+Busca resposta para pergunta usando fuzzy matching avançado.
+
+**Body:**
+```json
+{
+  "pergunta": "Como renovar meu plano?"
+}
+```
+
+**Resposta de Sucesso (200):**
+```json
+{
+  "status": true,
+  "message": "Resposta encontrada com sucesso",
+  "score": "0.950",
+  "data": {
+    "assunto": "Renovação de Contrato",
+    "resposta": "A renovação do contrato pode ser feita diretamente no painel do cliente..."
+  }
+}
+```
+
+**Resposta Não Encontrada (404):**
+```json
+{
+  "status": false,
+  "message": "Não foi possível encontrar uma resposta relacionada à sua pergunta",
+  "score": "0.000",
+  "threshold": 0.15,
+  "sugestoes": [
+    {
+      "assunto": "Suporte Técnico",
+      "pergunta": "Como solicitar suporte técnico?",
+      "score": "0.648"
+    }
+  ]
+}
+```
+
+### Assuntos Disponíveis
+1. **Cancelamento de Serviço** - Informações sobre cancelamento de serviços
+2. **Localização da Soft** - Localização da empresa e atendimento presencial
+3. **Renovação de Contrato** - Perguntas sobre renovação de planos e contratos
+4. **Formas de Contato** - Canais de contato disponíveis (WhatsApp, telefone, email)
+
+### Exemplo de Uso
+```bash
+# Pergunta com erro de digitação
+curl -X POST http://localhost:3000/faq \
+  -H "Content-Type: application/json" \
+  -d '{"pergunta": "Como renovar meu contarto?"}'
+```
+
+```bash
+# Listar assuntos disponíveis
+curl http://localhost:3000/faq/assuntos
+```
+
 ### ⚠️ Regras de Negócio Implementadas
 - **Projetos**: Usuário pode ter múltiplos projetos
 - **Boletos**: Apenas 1 boleto por projeto
