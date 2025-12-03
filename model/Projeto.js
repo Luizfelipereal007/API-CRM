@@ -157,8 +157,10 @@ export default class Projeto {
   }
 
   static async criar(dadosProjeto) {
+    const transaction = db;
+    
     try {
-      const { nome, status, previsao_entrega, usuario_id } = dadosProjeto;
+      const { nome, status, previsao_entrega, usuario_id, valor_boleto } = dadosProjeto;
 
       if (!nome || !status || !previsao_entrega || !usuario_id) {
         return {
@@ -169,7 +171,7 @@ export default class Projeto {
         };
       }
 
-      const usuario = await db.get('SELECT * FROM usuarios WHERE id = ?', [usuario_id]);
+      const usuario = await transaction.get('SELECT * FROM usuarios WHERE id = ?', [usuario_id]);
       if (!usuario) {
         return {
           success: false,
@@ -178,20 +180,48 @@ export default class Projeto {
         };
       }
 
-      const result = await db.run(
+      await transaction.run('BEGIN TRANSACTION');
+
+      const result = await transaction.run(
         'INSERT INTO projetos (nome, status, previsao_entrega, usuario_id) VALUES (?, ?, ?, ?)',
         [nome, status, previsao_entrega, usuario_id]
       );
 
-      const novoProjeto = await db.get('SELECT * FROM projetos WHERE id = ?', [result.lastID]);
+      const projetoId = result.lastID;
+      const novoProjeto = await transaction.get('SELECT * FROM projetos WHERE id = ?', [projetoId]);
+
+      const valor = valor_boleto || 1000.00;
+      const dataVencimento = new Date();
+      dataVencimento.setDate(dataVencimento.getDate() + 30);
+
+      const nomeBoleto = `Boleto Projeto ${nome}`;
+      const statusProjeto = status || 'desenvolvimento';
+
+      const boletoResult = await transaction.run(
+        'INSERT INTO boletos (nome, valor, data_vencimento, status_projeto, projeto_id) VALUES (?, ?, ?, ?, ?)',
+        [nomeBoleto, valor, dataVencimento.toISOString().split('T')[0], statusProjeto, projetoId]
+      );
+
+      const novoBoleto = await transaction.get('SELECT * FROM boletos WHERE id = ?', [boletoResult.lastID]);
+
+      await transaction.run('COMMIT');
 
       return {
         success: true,
         status: 201,
-        data: novoProjeto,
-        message: 'Projeto criado com sucesso'
+        data: {
+          projeto: novoProjeto,
+          boleto: novoBoleto
+        },
+        message: 'Projeto e boleto criados com sucesso'
       };
     } catch (error) {
+      try {
+        await transaction.run('ROLLBACK');
+      } catch (rollbackError) {
+        console.error('Erro ao reverter transação:', rollbackError);
+      }
+      
       throw new Error(`Erro ao criar projeto: ${error.message}`);
     }
   }
