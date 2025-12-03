@@ -15,8 +15,6 @@ router.get('/nome/:nome', BoletoController.buscarBoletosPorNome);
 
 router.get('/cpf/:cpf', BoletoController.buscarBoletosPorCpf);
 
-router.post('/', BoletoController.criarBoleto);
-
 router.put('/:id/pagar', BoletoController.pagarBoleto);
 
 router.delete('/:id', BoletoController.deletarBoleto);
