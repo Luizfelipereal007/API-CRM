@@ -3,29 +3,29 @@ const usuariosSeed = [
   {
     nome: 'João',
     sobrenome: 'Silva',
-    telefone: '(11) 99999-1111',
-    cpf: '123.456.789-01',
+    telefone: '1199999-1111',
+    cpf: '12345678901',
     email: 'joao.silva@email.com'
   },
   {
     nome: 'Maria',
     sobrenome: 'Santos',
-    telefone: '(11) 99999-2222',
-    cpf: '234.567.890-12',
+    telefone: '1199999-2222',
+    cpf: '23456789012',
     email: 'maria.santos@email.com'
   },
   {
     nome: 'Pedro',
     sobrenome: 'Oliveira',
-    telefone: '(11) 99999-3333',
-    cpf: '345.678.901-23',
+    telefone: '1199999-3333',
+    cpf: '34567890123',
     email: 'pedro.oliveira@email.com'
   },
   {
     nome: 'Ana',
     sobrenome: 'Costa',
-    telefone: '(11) 99999-4444',
-    cpf: '456.789.012-34',
+    telefone: '1199999-4444',
+    cpf: '45678901234',
     email: 'ana.costa@email.com'
   }
 ];
