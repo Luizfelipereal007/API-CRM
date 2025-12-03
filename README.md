@@ -69,20 +69,11 @@ API rodando em `http://localhost:3000`
 - **GET** `/boletos/email/:email` - Buscar boletos por email do usuário
 - **GET** `/boletos/nome/:nome` - Buscar boletos por nome do usuário
 - **GET** `/boletos/cpf/:cpf` - Buscar boletos por CPF do usuário
-- **POST** `/boletos` - Criar boleto
 - **PUT** `/boletos/:id/pagar` - Marcar como pago (gera nota fiscal automaticamente)
 - **DELETE** `/boletos/:id` - Deletar boleto
 
-**Exemplo POST:**
-```json
-{
-  "nome": "Boleto Site",
-  "valor": 1500.00,
-  "data_vencimento": "2026-02-15",
-  "status_projeto": "desenvolvimento",
-  "projeto_id": 1
-}
-```
+> ⚠️ **IMPORTANTE**: Boletos são criados automaticamente quando um projeto é criado. Não é possível criar boletos manualmente.
+
 
 ### Notas Fiscais
 - **GET** `/notas-fiscais` - Listar notas fiscais
@@ -95,11 +86,12 @@ API rodando em `http://localhost:3000`
 
 **⚠️ POST** - Notas fiscais são criadas automaticamente quando o boleto é pago
 
-### Fluxo de Pagamento
-1. Criar boleto via `POST /boletos`
-2. Pagar boleto via `PUT /boletos/:id/pagar`
-3. Nota fiscal é gerada automaticamente
-4. Consultar notas via `/notas-fiscais`
+### Fluxo de Pagamento Atualizado
+1. **Criar projeto** via `POST /projetos`
+2. **Boleto é automaticamente criado** para o projeto
+3. Pagar boleto via `PUT /boletos/:id/pagar`
+4. **Nota fiscal é gerada automaticamente**
+5. Consultar notas via `/notas-fiscais`
 
 ## Endpoints de Resumos
 
@@ -181,7 +173,10 @@ curl http://localhost:3000/faq/assuntos
 
 ### ⚠️ Regras de Negócio Implementadas
 - **Projetos**: Usuário pode ter múltiplos projetos
-- **Boletos**: Apenas 1 boleto por projeto
+- **Boletos**: 
+  - Apenas 1 boleto por projeto
+  - **Criados automaticamente** quando projeto é criado
+  - **NÃO** é possível criar boletos manualmente
 - **Notas Fiscais**: Criadas automaticamente quando boleto é pago
 - **Resumos**: Retorna um resumo de boletos pagos
 
