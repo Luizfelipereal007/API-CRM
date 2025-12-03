@@ -1,6 +1,7 @@
+import { dirname, join } from 'path';
 import sqlite3 from 'sqlite3';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { seedDatabase } from './scripts/seed-database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -121,6 +122,13 @@ const initDatabase = async () => {
     `);
 
     console.log('Tabelas criadas com sucesso');
+    
+    try {
+      await seedDatabase(db);
+    } catch (seedError) {
+      console.warn('Aviso: Erro ao executar seed do banco:', seedError.message);
+    }
+    
   } catch (error) {
     console.error('Erro ao criar tabelas:', error.message);
     throw error;
