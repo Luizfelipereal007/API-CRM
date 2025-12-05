@@ -83,6 +83,29 @@ const faqData = [
       "Como registrar reclamação ou sugestão?",
       "Existe canal para sugestões de melhoria?"
     ]
+  },
+  {
+    assunto: "Horário de Atendimento",
+    palavrasChave: ["horário atendimento", "funcionamento empresa", "horário serviço segunda sexta", "atendimento humano feriados", "horário trabalho comercial", "atendimento presencial", "funcionamento dias úteis", "horário resposta suporte"],
+    pergunta: "Qual é o horário de atendimento da empresa?",
+    resposta: "Nosso horário de atendimento é de segunda a sexta, das 08h às 18h.\nSábados, domingos e feriados sem atendimento humano.",
+    perguntasSimilares: [
+      "Qual o horário de funcionamento?",
+      "Quando vocês atendem?",
+      "Vocês funcionam aos fins de semana?",
+      "Qual o horário para suporte técnico?",
+      "Atendem nos feriados?",
+      "Horário de atendimento ao cliente",
+      "Quando posso entrar em contato?",
+      "Funcionamento aos sábados?",
+      "Qual horário da central de atendimento?",
+      "Atendem finais de semana?",
+      "Horário comercial da empresa",
+      "Quando não há atendimento humano?",
+      "Como funciona o horário de trabalho?",
+      "Atendimento apenas dias úteis?",
+      "Horário de resposta do suporte"
+    ]
   }
 ];
 
