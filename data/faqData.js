@@ -20,10 +20,12 @@ const faqData = [
   },
   {
     assunto: "Localização da Soft",
-    palavrasChave: ["localização soft endereço físico", "atendimento presencial agendar visita", "base operações área comercial", "contato visita atendimento local", "empresa location physical office"],
+    palavrasChave: ["localização", "soft localização", "localização soft endereço físico", "atendimento presencial agendar visita", "base operações área comercial", "contato visita atendimento local", "empresa location physical office"],
     pergunta: "Onde fica located a Soft?",
     resposta: "A Soft opera de forma totalmente digital, mas nossa base de operações está localizada em uma área comercial central.\n\nCaso precise de atendimento presencial, entre em contato previamente para agendar uma visita.",
     perguntasSimilares: [
+      "soft localização",
+      "localização",
       "A Soft tem atendimento presencial?",
       "Como agendar uma visita na Soft?",
       "Qual o endereço físico da empresa?",
